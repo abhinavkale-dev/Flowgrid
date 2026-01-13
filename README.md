@@ -1,13 +1,13 @@
-# Turborepo starter
+# FlowGrid - Workflow Automation Platform
 
-This Turborepo starter is maintained by the Turborepo core team.
+FlowGrid is a modern workflow automation platform built with Next.js, React Flow, and Turborepo.
 
-## Using this example
+## Getting Started
 
-Run the following command:
+Install dependencies:
 
 ```sh
-npx create-turbo@latest
+pnpm install
 ```
 
 ## What's inside?
@@ -16,11 +16,14 @@ This Turborepo includes the following packages/apps:
 
 ### Apps and Packages
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- `web`: Next.js frontend with workflow editor
+- `api`: Express.js backend API server
+- `worker`: Background worker for workflow execution
+- `@repo/prisma`: Database schema and client
+- `@repo/engine`: Workflow engine schemas
+- `@repo/shared`: Shared utilities
+- `@repo/eslint-config`: ESLint configurations
+- `@repo/typescript-config`: TypeScript configurations
 
 Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
@@ -60,21 +63,19 @@ yarn exec turbo build --filter=docs
 pnpm exec turbo build --filter=docs
 ```
 
-### Develop
+### Development
 
-To develop all apps and packages, run the following command:
+Run all services in development mode:
 
+```sh
+pnpm dev
 ```
-cd my-turborepo
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+This will start:
+- Web (Frontend): http://localhost:3000
+- API (Backend): http://localhost:3001
+- Worker: Background process
+- Database: PostgreSQL via Docker
 
 You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
 
