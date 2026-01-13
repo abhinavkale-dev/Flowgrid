@@ -1,17 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/create-next-app).
+# FlowGrid Web
+
+This is the frontend application for FlowGrid, built with Next.js 15, React Flow, and shadcn/ui.
+
+## Features
+
+- Visual workflow editor with React Flow
+- Real-time workflow execution
+- Node-based UI components
+- Authentication with Better Auth
+- Responsive design with Tailwind CSS
 
 ## Getting Started
 
-First, run the development server:
+Run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
