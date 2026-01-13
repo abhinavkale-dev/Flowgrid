@@ -1,0 +1,40 @@
+{
+  "name": "@repo/engine",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./schemas/index.ts",
+  "types": "./schemas/index.ts",
+  "exports": {
+    "./schemas": "./schemas/index.ts",
+    "./schemas/*": "./schemas/*.ts"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^22.15.3",
+    "typescript": "^5.0.0"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

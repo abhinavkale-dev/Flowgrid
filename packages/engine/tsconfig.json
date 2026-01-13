@@ -1,0 +1,29 @@
+{
+  "extends": "@repo/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./schemas"
+  },
+  "include": ["schemas/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
