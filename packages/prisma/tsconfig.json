@@ -1,0 +1,16 @@
+{
+  "extends": "@repo/typescript-config/base.json",
+  "compilerOptions": {
+    "outDir": ".",
+    "rootDir": ".",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ES2022",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  },
+  "include": ["index.ts", "seed.ts"],
+  "exclude": ["node_modules", "generated", "migrations"]
+}
+
