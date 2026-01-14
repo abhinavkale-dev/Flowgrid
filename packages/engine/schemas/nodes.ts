@@ -7,7 +7,7 @@ export const HTTPTriggerSchema = z.object({
   }).default('GET'),
   headers: z.record(z.string()).optional(),
   body: z.string().optional(),
-  timeout: z.number().min(1000).max(300000).optional(), // 1s to 5min
+  timeout: z.number().min(1000).max(300000).optional(),
 })
 
 export const AINodeSchema = z.object({
