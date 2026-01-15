@@ -42,17 +42,17 @@ const items = [
 
 export function HomeSidebar() {
   return (
-    <Sidebar>
-      <SidebarContent>
+    <Sidebar collapsible="icon" className="bg-[#414243] text-white border-r border-white/10">
+      <SidebarContent className="bg-[#414243]">
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-white/70">Application</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild className="text-white hover:bg-white/10 hover:text-white">
                     <a href={item.url}>
-                      <item.icon />
+                      <item.icon className="text-white" />
                       <span>{item.title}</span>
                     </a>
                   </SidebarMenuButton>
