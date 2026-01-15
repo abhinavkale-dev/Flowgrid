@@ -1,14 +1,144 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../../apps/web/src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id            String        @id
+  name          String
+  email         String        @unique
+  emailVerified Boolean       @default(false)
+  image         String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  workflows     Workflow[]
+  credentials   Credentials[]
+  sessions      Session[]
+  accounts      Account[]
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                String   @id
+  accountId         String
+  providerId        String
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken       String?
+  refreshToken      String?
+  idToken           String?
+  accessTokenExpiresAt DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope             String?
+  password          String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@unique([providerId, accountId])
+}
+
+model Workflow {
+  id           String        @id @default(uuid())
+  title        String        @default("Workflow")
+  userId       String?
+  user         User?         @relation(fields: [userId], references: [id])
+  trigger      Trigger?
+  actions      Action[]
+  runs         WorkflowRun[]
+  nodes        Json          @default("[]")
+  edges        Json          @default("[]")
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Trigger {
+  id                  String            @id @default(uuid())
+  workflowId          String            @unique
+  workflow            Workflow          @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  availableTriggerId  String
+  type                AvailableTrigger  @relation(fields: [availableTriggerId], references: [id])
+  metadata            Json              @default("{}")
+}
+
+model AvailableTrigger {
+  id       String    @id
+  name     String
+  image    String
+  triggers Trigger[]
+}
+
+model Action {
+  id                 String           @id @default(uuid())
+  workflowId         String
+  workflow           Workflow         @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  availableActionId  String
+  type               AvailableAction  @relation(fields: [availableActionId], references: [id])
+  sortingOrder       Int              @default(0)
+  metadata           Json             @default("{}")
+}
+
+model AvailableAction {
+  id      String   @id
+  name    String
+  image   String
+  actions Action[]
+}
+
+model Credentials {
+  id        String   @id @default(uuid())
+  title     String
+  platform  Platform
+  keys      Json     @default("{}")
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model WorkflowRun {
+  id            String             @id @default(uuid())
+  workflowId    String
+  workflow      Workflow           @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  metadata      Json               @default("{}")
+  status        WorkflowStatus     @default(Pending)
+  errorMetadata Json?
+  createdAt     DateTime           @default(now())
+  finishedAt    DateTime?
+  outbox        WorkflowRunOutbox?
+}
+
+model WorkflowRunOutbox {
+  id            String      @id @default(uuid())
+  workflowRunId String      @unique
+  workflowRun   WorkflowRun @relation(fields: [workflowRunId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now())
+}
+
+enum Platform {
+  email
+  telegram
+  slack
+  openai
+  discord
+}
+
+enum WorkflowStatus {
+  Pending
+  Complete
+  Error
 }
