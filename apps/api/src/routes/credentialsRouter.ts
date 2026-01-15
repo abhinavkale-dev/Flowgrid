@@ -29,7 +29,6 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 })
 
-// Create credentials
 router.post('/', authMiddleware, async (req, res) => {
   const parsedData = CredentialCreateSchema.safeParse(req.body)
 
