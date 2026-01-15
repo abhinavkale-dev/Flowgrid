@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { prisma } from '../lib/prisma.js'
-import { authMiddleware } from '../middleware.js'
+import { requireAuth } from '../middleware/auth.js'
 import { z } from 'zod'
 
 const router = Router()
@@ -16,10 +16,10 @@ const CredentialUpdateSchema = z.object({
   keys: z.any().optional(),
 })
 
-router.get('/', authMiddleware, async (req, res) => {
+router.get('/', requireAuth, async (req, res) => {
   try {
     const credentials = await prisma.credentials.findMany({
-      where: { userId: req.userId },
+      where: { userId: res.locals.userId },
     })
 
     res.json({ credentials })
@@ -29,7 +29,7 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 })
 
-router.post('/', authMiddleware, async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   const parsedData = CredentialCreateSchema.safeParse(req.body)
 
   if (!parsedData.success) {
@@ -43,7 +43,7 @@ router.post('/', authMiddleware, async (req, res) => {
         title: parsedData.data.title,
         platform: parsedData.data.platform,
         keys: parsedData.data.keys,
-        userId: req.userId!,
+        userId: res.locals.userId,
       },
     })
 
@@ -57,7 +57,7 @@ router.post('/', authMiddleware, async (req, res) => {
   }
 })
 
-router.put('/:id', authMiddleware, async (req, res) => {
+router.put('/:id', requireAuth, async (req, res) => {
   const parsedData = CredentialUpdateSchema.safeParse(req.body)
 
   if (!parsedData.success) {
@@ -69,7 +69,7 @@ router.put('/:id', authMiddleware, async (req, res) => {
     const credential = await prisma.credentials.findFirst({
       where: {
         id: req.params.id,
-        userId: req.userId,
+        userId: res.locals.userId,
       },
     })
 
@@ -93,12 +93,12 @@ router.put('/:id', authMiddleware, async (req, res) => {
   }
 })
 
-router.delete('/:id', authMiddleware, async (req, res) => {
+router.delete('/:id', requireAuth, async (req, res) => {
   try {
     const credential = await prisma.credentials.findFirst({
       where: {
         id: req.params.id,
-        userId: req.userId,
+        userId: res.locals.userId,
       },
     })
 

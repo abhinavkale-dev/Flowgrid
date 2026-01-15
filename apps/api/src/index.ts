@@ -1,7 +1,6 @@
 import express from 'express'
 import cors from 'cors'
 import 'dotenv/config'
-import { userRouter } from './routes/userRouter.js'
 import { workflowRouter } from './routes/workflowRouter.js'
 import { credentialsRouter } from './routes/credentialsRouter.js'
 import { triggerRouter } from './routes/triggerRouter.js'
@@ -15,7 +14,6 @@ app.use(cors())
 app.use(express.json())
 
 // Routes
-app.use('/api/v1/user', userRouter)
 app.use('/api/v1/workflow', workflowRouter)
 app.use('/api/v1/credentials', credentialsRouter)
 app.use('/api/v1/trigger', triggerRouter)
