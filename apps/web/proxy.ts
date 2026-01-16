@@ -4,7 +4,16 @@ import { auth } from "./lib/auth"
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  })
+
+  if (pathname === "/" && session) {
+    return NextResponse.redirect(new URL("/home", request.url))
+  }
+
   if (
+    pathname === "/" ||
     pathname.startsWith("/signin") ||
     pathname.startsWith("/signup") ||
     pathname.startsWith("/api/auth") ||
@@ -13,10 +22,6 @@ export async function proxy(request: NextRequest) {
   ) {
     return NextResponse.next()
   }
-
-  const session = await auth.api.getSession({
-    headers: request.headers,
-  })
 
   if (!session) {
     const signInUrl = new URL("/signin", request.url)
