@@ -387,7 +387,6 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification',
   Workflow: 'Workflow',
   Trigger: 'Trigger',
   AvailableTrigger: 'AvailableTrigger',
@@ -395,7 +394,8 @@ export const ModelName = {
   AvailableAction: 'AvailableAction',
   Credentials: 'Credentials',
   WorkflowRun: 'WorkflowRun',
-  WorkflowRunOutbox: 'WorkflowRunOutbox'
+  WorkflowRunOutbox: 'WorkflowRunOutbox',
+  NodeRun: 'NodeRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -411,7 +411,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "workflow" | "trigger" | "availableTrigger" | "action" | "availableAction" | "credentials" | "workflowRun" | "workflowRunOutbox"
+    modelProps: "user" | "session" | "account" | "workflow" | "trigger" | "availableTrigger" | "action" | "availableAction" | "credentials" | "workflowRun" | "workflowRunOutbox" | "nodeRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -634,80 +634,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.AccountCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.AccountCountAggregateOutputType> | number
-        }
-      }
-    }
-    Verification: {
-      payload: Prisma.$VerificationPayload<ExtArgs>
-      fields: Prisma.VerificationFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.VerificationFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.VerificationFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
-        }
-        findFirst: {
-          args: Prisma.VerificationFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.VerificationFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
-        }
-        findMany: {
-          args: Prisma.VerificationFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>[]
-        }
-        create: {
-          args: Prisma.VerificationCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
-        }
-        createMany: {
-          args: Prisma.VerificationCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.VerificationCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>[]
-        }
-        delete: {
-          args: Prisma.VerificationDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
-        }
-        update: {
-          args: Prisma.VerificationUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
-        }
-        deleteMany: {
-          args: Prisma.VerificationDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.VerificationUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.VerificationUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>[]
-        }
-        upsert: {
-          args: Prisma.VerificationUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$VerificationPayload>
-        }
-        aggregate: {
-          args: Prisma.VerificationAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateVerification>
-        }
-        groupBy: {
-          args: Prisma.VerificationGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.VerificationGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.VerificationCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.VerificationCountAggregateOutputType> | number
         }
       }
     }
@@ -1303,6 +1229,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    NodeRun: {
+      payload: Prisma.$NodeRunPayload<ExtArgs>
+      fields: Prisma.NodeRunFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NodeRunFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NodeRunFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload>
+        }
+        findFirst: {
+          args: Prisma.NodeRunFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NodeRunFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload>
+        }
+        findMany: {
+          args: Prisma.NodeRunFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload>[]
+        }
+        create: {
+          args: Prisma.NodeRunCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload>
+        }
+        createMany: {
+          args: Prisma.NodeRunCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.NodeRunCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload>[]
+        }
+        delete: {
+          args: Prisma.NodeRunDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload>
+        }
+        update: {
+          args: Prisma.NodeRunUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload>
+        }
+        deleteMany: {
+          args: Prisma.NodeRunDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NodeRunUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.NodeRunUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload>[]
+        }
+        upsert: {
+          args: Prisma.NodeRunUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NodeRunPayload>
+        }
+        aggregate: {
+          args: Prisma.NodeRunAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNodeRun>
+        }
+        groupBy: {
+          args: Prisma.NodeRunGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NodeRunGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NodeRunCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NodeRunCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1388,18 +1388,6 @@ export const AccountScalarFieldEnum = {
 export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
 
 
-export const VerificationScalarFieldEnum = {
-  id: 'id',
-  identifier: 'identifier',
-  value: 'value',
-  expiresAt: 'expiresAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
-
-
 export const WorkflowScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -1472,7 +1460,9 @@ export const WorkflowRunScalarFieldEnum = {
   status: 'status',
   errorMetadata: 'errorMetadata',
   createdAt: 'createdAt',
-  finishedAt: 'finishedAt'
+  finishedAt: 'finishedAt',
+  lockedAt: 'lockedAt',
+  lockedBy: 'lockedBy'
 } as const
 
 export type WorkflowRunScalarFieldEnum = (typeof WorkflowRunScalarFieldEnum)[keyof typeof WorkflowRunScalarFieldEnum]
@@ -1485,6 +1475,23 @@ export const WorkflowRunOutboxScalarFieldEnum = {
 } as const
 
 export type WorkflowRunOutboxScalarFieldEnum = (typeof WorkflowRunOutboxScalarFieldEnum)[keyof typeof WorkflowRunOutboxScalarFieldEnum]
+
+
+export const NodeRunScalarFieldEnum = {
+  id: 'id',
+  workflowRunId: 'workflowRunId',
+  nodeId: 'nodeId',
+  nodeType: 'nodeType',
+  status: 'status',
+  input: 'input',
+  output: 'output',
+  error: 'error',
+  retryCount: 'retryCount',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt'
+} as const
+
+export type NodeRunScalarFieldEnum = (typeof NodeRunScalarFieldEnum)[keyof typeof NodeRunScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1633,6 +1640,20 @@ export type ListEnumWorkflowStatusFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'NodeStatus'
+ */
+export type EnumNodeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NodeStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'NodeStatus[]'
+ */
+export type ListEnumNodeStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NodeStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -1727,7 +1748,6 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   session?: Prisma.SessionOmit
   account?: Prisma.AccountOmit
-  verification?: Prisma.VerificationOmit
   workflow?: Prisma.WorkflowOmit
   trigger?: Prisma.TriggerOmit
   availableTrigger?: Prisma.AvailableTriggerOmit
@@ -1736,6 +1756,7 @@ export type GlobalOmitConfig = {
   credentials?: Prisma.CredentialsOmit
   workflowRun?: Prisma.WorkflowRunOmit
   workflowRunOutbox?: Prisma.WorkflowRunOutboxOmit
+  nodeRun?: Prisma.NodeRunOmit
 }
 
 /* Types for Logging */

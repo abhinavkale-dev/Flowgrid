@@ -33,11 +33,6 @@ export type Session = Prisma.SessionModel
  */
 export type Account = Prisma.AccountModel
 /**
- * Model Verification
- * 
- */
-export type Verification = Prisma.VerificationModel
-/**
  * Model Workflow
  * 
  */
@@ -77,3 +72,8 @@ export type WorkflowRun = Prisma.WorkflowRunModel
  * 
  */
 export type WorkflowRunOutbox = Prisma.WorkflowRunOutboxModel
+/**
+ * Model NodeRun
+ * 
+ */
+export type NodeRun = Prisma.NodeRunModel

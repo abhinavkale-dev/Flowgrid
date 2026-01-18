@@ -13,7 +13,8 @@ export const Platform = {
   email: 'email',
   telegram: 'telegram',
   slack: 'slack',
-  openai: 'openai'
+  openai: 'openai',
+  discord: 'discord'
 } as const
 
 export type Platform = (typeof Platform)[keyof typeof Platform]
@@ -26,3 +27,14 @@ export const WorkflowStatus = {
 } as const
 
 export type WorkflowStatus = (typeof WorkflowStatus)[keyof typeof WorkflowStatus]
+
+
+export const NodeStatus = {
+  Pending: 'Pending',
+  Running: 'Running',
+  Success: 'Success',
+  Failed: 'Failed',
+  Skipped: 'Skipped'
+} as const
+
+export type NodeStatus = (typeof NodeStatus)[keyof typeof NodeStatus]

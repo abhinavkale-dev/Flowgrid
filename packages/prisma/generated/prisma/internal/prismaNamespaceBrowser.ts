@@ -54,7 +54,6 @@ export const ModelName = {
   User: 'User',
   Session: 'Session',
   Account: 'Account',
-  Verification: 'Verification',
   Workflow: 'Workflow',
   Trigger: 'Trigger',
   AvailableTrigger: 'AvailableTrigger',
@@ -62,7 +61,8 @@ export const ModelName = {
   AvailableAction: 'AvailableAction',
   Credentials: 'Credentials',
   WorkflowRun: 'WorkflowRun',
-  WorkflowRunOutbox: 'WorkflowRunOutbox'
+  WorkflowRunOutbox: 'WorkflowRunOutbox',
+  NodeRun: 'NodeRun'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -125,18 +125,6 @@ export const AccountScalarFieldEnum = {
 } as const
 
 export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
-
-
-export const VerificationScalarFieldEnum = {
-  id: 'id',
-  identifier: 'identifier',
-  value: 'value',
-  expiresAt: 'expiresAt',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type VerificationScalarFieldEnum = (typeof VerificationScalarFieldEnum)[keyof typeof VerificationScalarFieldEnum]
 
 
 export const WorkflowScalarFieldEnum = {
@@ -211,7 +199,9 @@ export const WorkflowRunScalarFieldEnum = {
   status: 'status',
   errorMetadata: 'errorMetadata',
   createdAt: 'createdAt',
-  finishedAt: 'finishedAt'
+  finishedAt: 'finishedAt',
+  lockedAt: 'lockedAt',
+  lockedBy: 'lockedBy'
 } as const
 
 export type WorkflowRunScalarFieldEnum = (typeof WorkflowRunScalarFieldEnum)[keyof typeof WorkflowRunScalarFieldEnum]
@@ -224,6 +214,23 @@ export const WorkflowRunOutboxScalarFieldEnum = {
 } as const
 
 export type WorkflowRunOutboxScalarFieldEnum = (typeof WorkflowRunOutboxScalarFieldEnum)[keyof typeof WorkflowRunOutboxScalarFieldEnum]
+
+
+export const NodeRunScalarFieldEnum = {
+  id: 'id',
+  workflowRunId: 'workflowRunId',
+  nodeId: 'nodeId',
+  nodeType: 'nodeType',
+  status: 'status',
+  input: 'input',
+  output: 'output',
+  error: 'error',
+  retryCount: 'retryCount',
+  startedAt: 'startedAt',
+  completedAt: 'completedAt'
+} as const
+
+export type NodeRunScalarFieldEnum = (typeof NodeRunScalarFieldEnum)[keyof typeof NodeRunScalarFieldEnum]
 
 
 export const SortOrder = {
