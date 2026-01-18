@@ -55,10 +55,6 @@ export interface ManualTriggerNodeData {
   payload?: Record<string, unknown>;
 }
 
-export interface HTTPTriggerNodeData {
-  payload?: Record<string, unknown>;
-}
-
 export type WorkflowNode =
   | { id: string; type: 'email'; data: EmailNodeData; position?: Position }
   | { id: string; type: 'discord'; data: DiscordNodeData; position?: Position }
@@ -67,7 +63,6 @@ export type WorkflowNode =
   | { id: string; type: 'http'; data: HTTPNodeData; position?: Position }
   | { id: string; type: 'aiNode'; data: AINodeData; position?: Position }
   | { id: string; type: 'manualTrigger'; data: ManualTriggerNodeData; position?: Position }
-  | { id: string; type: 'httpTrigger'; data: HTTPTriggerNodeData; position?: Position };
 
 
 export type NodeExecutionOutput = 
@@ -83,6 +78,7 @@ export interface NodeRun {
   nodeId: string;
   status: NodeStatus;
   retryCount: number;
+  output?: NodeExecutionOutput | null;
 }
 
 
@@ -134,10 +130,6 @@ const manualTriggerNodeDataSchema = z.object({
   payload: z.record(z.unknown()).optional(),
 });
 
-const httpTriggerNodeDataSchema = z.object({
-  payload: z.record(z.unknown()).optional(),
-});
-
 const workflowNodeSchema = z.discriminatedUnion('type', [
   z.object({
     id: z.string(),
@@ -180,13 +172,7 @@ const workflowNodeSchema = z.discriminatedUnion('type', [
     type: z.literal('manualTrigger'),
     data: manualTriggerNodeDataSchema,
     position: positionSchema.optional(),
-  }),
-  z.object({
-    id: z.string(),
-    type: z.literal('httpTrigger'),
-    data: httpTriggerNodeDataSchema,
-    position: positionSchema.optional(),
-  }),
+  })
 ]);
 
 const workflowEdgeSchema = z.object({
@@ -238,8 +224,4 @@ export function isAINode(node: WorkflowNode): node is Extract<WorkflowNode, { ty
 
 export function isManualTriggerNode(node: WorkflowNode): node is Extract<WorkflowNode, { type: 'manualTrigger' }> {
   return node.type === 'manualTrigger';
-}
-
-export function isHTTPTriggerNode(node: WorkflowNode): node is Extract<WorkflowNode, { type: 'httpTrigger' }> {
-  return node.type === 'httpTrigger';
 }

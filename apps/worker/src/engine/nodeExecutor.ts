@@ -1,5 +1,6 @@
 import { prisma, NodeStatus } from "@repo/prisma";
 import type { WorkflowNode, NodeRun, NodeExecutionOutput } from "./types.js";
+import { executeDiscordNode, executeHTTPNode } from "../executors/index.js";
 
 export async function executeNode(workflowRunId: string, node: WorkflowNode, existingNodeRuns: NodeRun[]): Promise<void> {
     let nodeRun = findNodeRunForNode(existingNodeRuns, node.id);
@@ -20,7 +21,7 @@ export async function executeNode(workflowRunId: string, node: WorkflowNode, exi
                 retryCount: nodeRun.retryCount + 1,
                 startedAt: new Date()
             }
-        });
+        }) as NodeRun;
     }
 
     else {
@@ -33,11 +34,18 @@ export async function executeNode(workflowRunId: string, node: WorkflowNode, exi
                 retryCount: 0,
                 startedAt: new Date()
             }
-        });
+        }) as NodeRun;
     }
 
     try {
-        const output = await executeNodeLogic(node, nodeRun.id);
+        const runMetadata: Record<string, NodeExecutionOutput> = {};
+        for (const run of existingNodeRuns) {
+            if (run.status === NodeStatus.Success && run.output) {
+                runMetadata[run.nodeId] = run.output;
+            }
+        }
+
+        const output = await executeNodeLogic(node, nodeRun.id, runMetadata);
         
         if (output !== null) {
             await prisma.nodeRun.update({
@@ -70,22 +78,12 @@ export async function executeNode(workflowRunId: string, node: WorkflowNode, exi
     }
 }
 
-async function executeNodeLogic(node: WorkflowNode, nodeRunId: string): Promise<NodeExecutionOutput> {
+async function executeNodeLogic(node: WorkflowNode, nodeRunId: string, runMetadata: Record<string, NodeExecutionOutput>): Promise<NodeExecutionOutput> {
     switch(node.type) {
-        case 'email':
-            return await executeEmailNode(node.data, nodeRunId);
-        case 'slack':
-            return await executeSlackNode(node.data, nodeRunId);
-        case 'telegram':
-            return await executeTelegramNode(node.data, nodeRunId);
         case 'discord':
-            return await executeDiscordNode(node.data, nodeRunId);
-        case 'httpTrigger':
-            return await executeHTTPTriggerNode(node.data, nodeRunId);
-        case 'aiNode':
-            return await executeAINode(node.data, nodeRunId);
-        case 'manualTrigger':
-            return await executeManualTriggerNode(node.data, nodeRunId);
+            return await executeDiscordNode(node.data, nodeRunId, runMetadata);
+        case 'http':
+            return await executeHTTPNode(node.data, nodeRunId, runMetadata);
         default:
             throw new Error(`Unsupported node type: ${node.type}`);
     }
