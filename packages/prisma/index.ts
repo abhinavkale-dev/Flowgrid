@@ -23,4 +23,5 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export * from './generated/prisma/client'
+export { NodeStatus, WorkflowStatus, Platform } from './generated/prisma/enums.js'
 

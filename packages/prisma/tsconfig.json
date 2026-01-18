@@ -8,7 +8,8 @@
     "target": "ES2022",
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "skipLibCheck": true
   },
   "include": ["index.ts", "seed.ts"],
   "exclude": ["node_modules", "generated", "migrations"]
