@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client"
-  output   = "../../apps/web/src/generated/prisma"
+  output   = "./generated/prisma"
 }
 
 datasource db {
@@ -119,7 +119,10 @@ model WorkflowRun {
   errorMetadata Json?
   createdAt     DateTime           @default(now())
   finishedAt    DateTime?
+  lockedAt      DateTime?
+  lockedBy      String?
   outbox        WorkflowRunOutbox?
+  nodeRuns      NodeRun[]
 }
 
 model WorkflowRunOutbox {
@@ -127,6 +130,26 @@ model WorkflowRunOutbox {
   workflowRunId String      @unique
   workflowRun   WorkflowRun @relation(fields: [workflowRunId], references: [id], onDelete: Cascade)
   createdAt     DateTime    @default(now())
+}
+
+model NodeRun {
+  id            String       @id @default(uuid())
+  workflowRunId String
+  nodeId        String
+  nodeType      String
+  status        NodeStatus   @default(Pending)
+  input         Json?
+  output        Json?
+  error         String?
+  retryCount    Int          @default(0)
+  startedAt     DateTime     @default(now())
+  completedAt   DateTime?
+  
+  workflowRun   WorkflowRun  @relation(fields: [workflowRunId], references: [id], onDelete: Cascade)
+  
+  @@unique([workflowRunId, nodeId])
+  @@index([workflowRunId])
+  @@index([status])
 }
 
 enum Platform {
@@ -141,4 +164,12 @@ enum WorkflowStatus {
   Pending
   Complete
   Error
+}
+
+enum NodeStatus {
+  Pending
+  Running
+  Success
+  Failed
+  Skipped
 }
