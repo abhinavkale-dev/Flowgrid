@@ -1,33 +1,5 @@
-interface WorkflowNode {
-    id: string;
-    type: string;
-    data: any;
-    position: {
-        x: number;
-        y: number;
-    };
-}
-
-interface WorkflowEdge {
-    id: string;
-    source: string;
-    target: string;
-}
-
-interface NodeRun {
-    id: string;
-    nodeId: string;
-    status: NodeStatus; 
-    retryCount: number;
-}
-
-enum NodeStatus {
-    Pending = 'Pending',    
-    Running = 'Running',
-    Success = 'Success',
-    Failed = 'Failed',
-    Skipped = 'Skipped'     
-}
+import { NodeStatus } from "@repo/prisma";
+import type { WorkflowNode, WorkflowEdge, NodeRun } from "./types.js";
 
 export function findRunnableNodes(nodes: WorkflowNode[], edges: WorkflowEdge[], nodeRuns: NodeRun[]): WorkflowNode[] {
     const runnableNodes: WorkflowNode[] = [];

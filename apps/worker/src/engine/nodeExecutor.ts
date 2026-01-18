@@ -1,17 +1,5 @@
 import { prisma, NodeStatus } from "@repo/prisma";
-
-interface WorkflowNode {
-    id: string;
-    type: string;
-    data: any;
-}
-
-interface NodeRun {
-    id: string;
-    nodeId: string;
-    status: NodeStatus;
-    retryCount: number;
-}
+import type { WorkflowNode, NodeRun, NodeExecutionOutput } from "./types.js";
 
 export async function executeNode(workflowRunId: string, node: WorkflowNode, existingNodeRuns: NodeRun[]): Promise<void> {
     let nodeRun = findNodeRunForNode(existingNodeRuns, node.id);
@@ -49,16 +37,26 @@ export async function executeNode(workflowRunId: string, node: WorkflowNode, exi
     }
 
     try {
-        const result = await executeNodeLogic(node, nodeRun.id);
+        const output = await executeNodeLogic(node, nodeRun.id);
         
-        await prisma.nodeRun.update({
-            where: { id: nodeRun.id },
-            data: {
-                status: NodeStatus.Success,
-                completedAt: new Date(),
-                output: result
-            }
-        });
+        if (output !== null) {
+            await prisma.nodeRun.update({
+                where: { id: nodeRun.id },
+                data: {
+                    status: NodeStatus.Success,
+                    completedAt: new Date(),
+                    output: output
+                }
+            });
+        } else {
+            await prisma.nodeRun.update({
+                where: { id: nodeRun.id },
+                data: {
+                    status: NodeStatus.Success,
+                    completedAt: new Date()
+                }
+            });
+        }
     } catch (error) {
         await prisma.nodeRun.update({
             where: { id: nodeRun.id },
@@ -72,7 +70,7 @@ export async function executeNode(workflowRunId: string, node: WorkflowNode, exi
     }
 }
 
-async function executeNodeLogic(node: WorkflowNode, nodeRunId: string): Promise<any> {
+async function executeNodeLogic(node: WorkflowNode, nodeRunId: string): Promise<NodeExecutionOutput> {
     switch(node.type) {
         case 'email':
             return await executeEmailNode(node.data, nodeRunId);

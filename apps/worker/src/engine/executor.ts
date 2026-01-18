@@ -2,7 +2,7 @@ import { NodeStatus, prisma, WorkflowStatus } from "@repo/prisma";
 import { findRunnableNodes } from "./nodeResolver.js";
 import { executeNode } from "./nodeExecutor.js";
 import { acquireLock, releaseLock } from "./lockManager.js";
-
+import { parseWorkflowNodes, parseWorkflowEdges, type NodeRun } from "./types.js";
 
 const WORKER_ID = `worker-${process.pid}-${Date.now()}`;
 
@@ -29,8 +29,8 @@ export async function executeWorkflow(workflowRunId: string): Promise<void> {
             throw new Error(`Workflow run ${workflowRunId} not found`);
         }
         
-        const nodes = workflowRun.workflow.nodes as WorkflowNode[];
-        const edges = workflowRun.workflow.edges as WorkflowEdge[];
+        const nodes = parseWorkflowNodes(workflowRun.workflow.nodes);
+        const edges = parseWorkflowEdges(workflowRun.workflow.edges);
 
         console.log(`Starting execution of workflow run ${workflowRunId}`);
         console.log(`Workflow has ${nodes.length} nodes and ${edges.length} edges brroo`);
@@ -45,12 +45,19 @@ export async function executeWorkflow(workflowRunId: string): Promise<void> {
                 where: { workflowRunId }
             });
 
-            const runnableNodes = findRunnableNodes(nodes, edges, currentNodeRuns);
+            const nodeRunsMinimal: NodeRun[] = currentNodeRuns.map(run => ({
+                id: run.id,
+                nodeId: run.nodeId,
+                status: run.status,
+                retryCount: run.retryCount
+            }));
+
+            const runnableNodes = findRunnableNodes(nodes, edges, nodeRunsMinimal);
 
             console.log(`Iteration ${iteration}: Found ${runnableNodes.length} runnable nodes`);
 
             if(runnableNodes.length === 0) {
-                console.log('No runnable nodes here. Execution is complete my boyy.')
+                console.log('No runnable nodes here. Execution is complete my boyy.');
                 break;
             }
 
@@ -58,7 +65,7 @@ export async function executeWorkflow(workflowRunId: string): Promise<void> {
                 console.log(`Executing node ${node.id} in iteration ${iteration} of type ${node.type}`);
                 
                 try {
-                    await executeNode(workflowRunId, node, currentNodeRuns);
+                    await executeNode(workflowRunId, node, nodeRunsMinimal);
                     console.log(`Node ${node.id} executed successfully in iteration ${iteration}`);
                 } catch (error) {
                     console.error(`Error executing node ${node.id} failed`, error);
@@ -97,8 +104,7 @@ export async function executeWorkflow(workflowRunId: string): Promise<void> {
                 finishedAt: new Date(),
                 errorMetadata: {
                     message: error instanceof Error ? error.message : 'Unknown error'
-                },
-                finishedAt: new Date()
+                }
             }
         });
 
