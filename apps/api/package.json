@@ -13,10 +13,13 @@
   "dependencies": {
     "@prisma/adapter-pg": "^7.2.0",
     "@repo/prisma": "workspace:*",
+    "@repo/shared": "workspace:*",
     "bcryptjs": "^2.4.3",
+    "bullmq": "^5.23.5",
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "ioredis": "^5.4.2",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3",
     "zod": "^3.22.4"

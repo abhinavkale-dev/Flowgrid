@@ -6,6 +6,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "tsx watch src/index.ts",
+    "dev:dashboard": "tsx watch src/dashboard.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "lint": "eslint src/**/*.ts"
@@ -13,12 +14,19 @@
   "dependencies": {
     "@repo/prisma": "workspace:*",
     "@repo/shared": "workspace:*",
+    "bullmq": "^5.23.5",
     "dotenv": "^17.2.2",
+    "express": "^4.21.2",
+    "ioredis": "^5.4.2",
     "nodemailer": "^7.0.9",
-    "openai": "^4.77.3"
+    "openai": "^4.77.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@bull-board/api": "^6.12.7",
+    "@bull-board/express": "^6.15.0",
     "@repo/typescript-config": "workspace:*",
+    "@types/express": "^4.17.21",
     "@types/node": "^22.15.3",
     "@types/nodemailer": "^7.0.2",
     "tsx": "^4.19.0"
