@@ -1,5 +1,5 @@
 import { NodeStatus } from "@repo/prisma";
-import type { WorkflowNode, WorkflowEdge, NodeRun } from "./types.js";
+import type { WorkflowNode, WorkflowEdge, NodeRun } from "./types/index.js";
 
 export function findRunnableNodes(nodes: WorkflowNode[], edges: WorkflowEdge[], nodeRuns: NodeRun[]): WorkflowNode[] {
     const runnableNodes: WorkflowNode[] = [];

@@ -1,5 +1,5 @@
 import { prisma, NodeStatus } from "@repo/prisma";
-import type { WorkflowNode, NodeRun, NodeExecutionOutput } from "./types.js";
+import type { WorkflowNode, NodeRun, NodeExecutionOutput } from "./types/index.js";
 import { executeDiscordNode, executeHTTPNode } from "../executors/index.js";
 
 export async function executeNode(workflowRunId: string, node: WorkflowNode, existingNodeRuns: NodeRun[]): Promise<void> {
@@ -80,10 +80,17 @@ export async function executeNode(workflowRunId: string, node: WorkflowNode, exi
 
 async function executeNodeLogic(node: WorkflowNode, nodeRunId: string, runMetadata: Record<string, NodeExecutionOutput>): Promise<NodeExecutionOutput> {
     switch(node.type) {
-        case 'discord':
+        case 'discordNode':
             return await executeDiscordNode(node.data, nodeRunId, runMetadata);
-        case 'http':
+        case 'httpTrigger':
             return await executeHTTPNode(node.data, nodeRunId, runMetadata);
+        case 'slackNode':
+            return await executeDiscordNode(node.data, nodeRunId, runMetadata);
+        case 'triggerNode':
+        case 'manualTrigger':
+            return null;
+        case 'aiNode':
+            throw new Error('AI Node execution not implemented yet');
         default:
             throw new Error(`Unsupported node type: ${node.type}`);
     }

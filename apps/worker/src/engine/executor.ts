@@ -2,7 +2,7 @@ import { NodeStatus, prisma, WorkflowStatus } from "@repo/prisma";
 import { findRunnableNodes } from "./nodeResolver.js";
 import { executeNode } from "./nodeExecutor.js";
 import { acquireLock, releaseLock } from "./lockManager.js";
-import { parseWorkflowNodes, parseWorkflowEdges, type NodeRun } from "./types.js";
+import { parseWorkflowNodes, parseWorkflowEdges, type NodeRun } from "./types/index.js";
 
 const WORKER_ID = `worker-${process.pid}-${Date.now()}`;
 
@@ -10,11 +10,8 @@ export async function executeWorkflow(workflowRunId: string): Promise<void> {
     const lockAcquired = await acquireLock(workflowRunId, WORKER_ID);
 
     if(!lockAcquired) {
-        console.log(`Workflow run ${workflowRunId} is already being executed by another worker`);
         return;
     }
-
-    console.log(`Lock acquired for workflow run ${workflowRunId}`);
 
     try {
         const workflowRun = await prisma.workflowRun.findUnique({
@@ -32,8 +29,7 @@ export async function executeWorkflow(workflowRunId: string): Promise<void> {
         const nodes = parseWorkflowNodes(workflowRun.workflow.nodes);
         const edges = parseWorkflowEdges(workflowRun.workflow.edges);
 
-        console.log(`Starting execution of workflow run ${workflowRunId}`);
-        console.log(`Workflow has ${nodes.length} nodes and ${edges.length} edges brroo`);
+        console.log(`Starting execution of workflow run ${workflowRunId} (${nodes.length} nodes, ${edges.length} edges)`);
 
         let iteration = 0;
         const MAX_ITERATIONS = 1001;
@@ -54,27 +50,24 @@ export async function executeWorkflow(workflowRunId: string): Promise<void> {
 
             const runnableNodes = findRunnableNodes(nodes, edges, nodeRunsMinimal);
 
-            console.log(`Iteration ${iteration}: Found ${runnableNodes.length} runnable nodes`);
-
             if(runnableNodes.length === 0) {
-                console.log('No runnable nodes here. Execution is complete my boyy.');
+                console.log(`Execution complete after ${iteration} iterations`);
                 break;
             }
 
+            console.log(`Iteration ${iteration}: Executing ${runnableNodes.length} node(s)`);
+
             for(const node of runnableNodes) {
-                console.log(`Executing node ${node.id} in iteration ${iteration} of type ${node.type}`);
-                
                 try {
                     await executeNode(workflowRunId, node, nodeRunsMinimal);
-                    console.log(`Node ${node.id} executed successfully in iteration ${iteration}`);
                 } catch (error) {
-                    console.error(`Error executing node ${node.id} failed`, error);
+                    console.error(`Node ${node.id} (${node.type}) failed:`, error);
                 }
             }
         }
 
         if(iteration >= MAX_ITERATIONS) {
-            throw new Error(`Max iterations reached. Execution is incomplete. Brroo! (${MAX_ITERATIONS})`);
+            throw new Error(`Maximum iterations (${MAX_ITERATIONS}) reached. Possible circular dependency.`);
         }
 
         const finalNodeRuns = await prisma.nodeRun.findMany({
@@ -92,10 +85,8 @@ export async function executeWorkflow(workflowRunId: string): Promise<void> {
             }
         });
 
-        console.log(`Workflow run ${workflowRunId} completed with status ${finalStatus}`);
-
     } catch (error) {
-        console.error(`Error executing workflow run ${workflowRunId}:`, error);
+        console.error(`Workflow run ${workflowRunId} failed:`, error);
 
         await prisma.workflowRun.update({
             where: { id: workflowRunId },
@@ -113,6 +104,5 @@ export async function executeWorkflow(workflowRunId: string): Promise<void> {
 
     finally {
         await releaseLock(workflowRunId);
-        console.log(`Lock released for workflow run ${workflowRunId}`);
     }
 }
