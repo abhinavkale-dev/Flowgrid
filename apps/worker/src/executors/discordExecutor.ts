@@ -1,15 +1,22 @@
 import { parseTemplate } from "@repo/shared/parser.js";
-import type { DiscordNodeData, NodeExecutionOutput } from "../engine/types.js";
+import type { DiscordNodeData, NodeExecutionOutput } from "../engine/types/index.js";
 
 
 export async function executeDiscordNode(
     data: DiscordNodeData,
-    nodeRunId: string,
+    _nodeRunId: string,
     runMetadata: Record<string, NodeExecutionOutput>
 ): Promise<NodeExecutionOutput> {
-    console.log(`Executing Discord node ${nodeRunId}`);
-
     const { webhookUrl, message, username } = data;
+    
+    if (!message) {
+        return {
+            success: true,
+            skipped: true,
+            reason: 'Node not configured'
+        };
+    }
+
     const parsedMessage = parseTemplate(message, runMetadata as Record<string, string>);
     const parsedUsername = parseTemplate(username || 'FlowGrid Bot', runMetadata as Record<string, string>);
 

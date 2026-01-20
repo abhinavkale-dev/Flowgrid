@@ -1,12 +1,11 @@
-import type { HTTPNodeData, NodeExecutionOutput } from "../engine/types.js";
+import type { HTTPNodeData, NodeExecutionOutput } from "../engine/types/index.js";
 import { parseTemplate } from "@repo/shared/parser.js";
 
 export async function executeHTTPNode(
     data: HTTPNodeData,
-    nodeRunId: string,
+    _nodeRunId: string,
     runMetadata: Record<string, NodeExecutionOutput>
 ): Promise<NodeExecutionOutput> {
-    console.log(`Executing HTTP node ${nodeRunId}`);
 
     const { url, method, headers, body } = data;
 
