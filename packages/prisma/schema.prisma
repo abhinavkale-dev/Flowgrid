@@ -121,15 +121,7 @@ model WorkflowRun {
   finishedAt    DateTime?
   lockedAt      DateTime?
   lockedBy      String?
-  outbox        WorkflowRunOutbox?
   nodeRuns      NodeRun[]
-}
-
-model WorkflowRunOutbox {
-  id            String      @id @default(uuid())
-  workflowRunId String      @unique
-  workflowRun   WorkflowRun @relation(fields: [workflowRunId], references: [id], onDelete: Cascade)
-  createdAt     DateTime    @default(now())
 }
 
 model NodeRun {
