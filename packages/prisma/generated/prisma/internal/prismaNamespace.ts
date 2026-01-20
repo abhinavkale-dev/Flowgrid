@@ -394,7 +394,6 @@ export const ModelName = {
   AvailableAction: 'AvailableAction',
   Credentials: 'Credentials',
   WorkflowRun: 'WorkflowRun',
-  WorkflowRunOutbox: 'WorkflowRunOutbox',
   NodeRun: 'NodeRun'
 } as const
 
@@ -411,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "workflow" | "trigger" | "availableTrigger" | "action" | "availableAction" | "credentials" | "workflowRun" | "workflowRunOutbox" | "nodeRun"
+    modelProps: "user" | "session" | "account" | "workflow" | "trigger" | "availableTrigger" | "action" | "availableAction" | "credentials" | "workflowRun" | "nodeRun"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1155,80 +1154,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    WorkflowRunOutbox: {
-      payload: Prisma.$WorkflowRunOutboxPayload<ExtArgs>
-      fields: Prisma.WorkflowRunOutboxFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.WorkflowRunOutboxFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.WorkflowRunOutboxFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload>
-        }
-        findFirst: {
-          args: Prisma.WorkflowRunOutboxFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.WorkflowRunOutboxFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload>
-        }
-        findMany: {
-          args: Prisma.WorkflowRunOutboxFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload>[]
-        }
-        create: {
-          args: Prisma.WorkflowRunOutboxCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload>
-        }
-        createMany: {
-          args: Prisma.WorkflowRunOutboxCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.WorkflowRunOutboxCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload>[]
-        }
-        delete: {
-          args: Prisma.WorkflowRunOutboxDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload>
-        }
-        update: {
-          args: Prisma.WorkflowRunOutboxUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload>
-        }
-        deleteMany: {
-          args: Prisma.WorkflowRunOutboxDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.WorkflowRunOutboxUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.WorkflowRunOutboxUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload>[]
-        }
-        upsert: {
-          args: Prisma.WorkflowRunOutboxUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$WorkflowRunOutboxPayload>
-        }
-        aggregate: {
-          args: Prisma.WorkflowRunOutboxAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateWorkflowRunOutbox>
-        }
-        groupBy: {
-          args: Prisma.WorkflowRunOutboxGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WorkflowRunOutboxGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.WorkflowRunOutboxCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.WorkflowRunOutboxCountAggregateOutputType> | number
-        }
-      }
-    }
     NodeRun: {
       payload: Prisma.$NodeRunPayload<ExtArgs>
       fields: Prisma.NodeRunFieldRefs
@@ -1466,15 +1391,6 @@ export const WorkflowRunScalarFieldEnum = {
 } as const
 
 export type WorkflowRunScalarFieldEnum = (typeof WorkflowRunScalarFieldEnum)[keyof typeof WorkflowRunScalarFieldEnum]
-
-
-export const WorkflowRunOutboxScalarFieldEnum = {
-  id: 'id',
-  workflowRunId: 'workflowRunId',
-  createdAt: 'createdAt'
-} as const
-
-export type WorkflowRunOutboxScalarFieldEnum = (typeof WorkflowRunOutboxScalarFieldEnum)[keyof typeof WorkflowRunOutboxScalarFieldEnum]
 
 
 export const NodeRunScalarFieldEnum = {
@@ -1755,7 +1671,6 @@ export type GlobalOmitConfig = {
   availableAction?: Prisma.AvailableActionOmit
   credentials?: Prisma.CredentialsOmit
   workflowRun?: Prisma.WorkflowRunOmit
-  workflowRunOutbox?: Prisma.WorkflowRunOutboxOmit
   nodeRun?: Prisma.NodeRunOmit
 }
 

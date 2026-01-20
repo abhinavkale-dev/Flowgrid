@@ -90,11 +90,6 @@ export type Credentials = Prisma.CredentialsModel
  */
 export type WorkflowRun = Prisma.WorkflowRunModel
 /**
- * Model WorkflowRunOutbox
- * 
- */
-export type WorkflowRunOutbox = Prisma.WorkflowRunOutboxModel
-/**
  * Model NodeRun
  * 
  */

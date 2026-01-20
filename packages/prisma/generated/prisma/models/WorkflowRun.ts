@@ -207,7 +207,6 @@ export type WorkflowRunWhereInput = {
   lockedAt?: Prisma.DateTimeNullableFilter<"WorkflowRun"> | Date | string | null
   lockedBy?: Prisma.StringNullableFilter<"WorkflowRun"> | string | null
   workflow?: Prisma.XOR<Prisma.WorkflowScalarRelationFilter, Prisma.WorkflowWhereInput>
-  outbox?: Prisma.XOR<Prisma.WorkflowRunOutboxNullableScalarRelationFilter, Prisma.WorkflowRunOutboxWhereInput> | null
   nodeRuns?: Prisma.NodeRunListRelationFilter
 }
 
@@ -222,7 +221,6 @@ export type WorkflowRunOrderByWithRelationInput = {
   lockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   lockedBy?: Prisma.SortOrderInput | Prisma.SortOrder
   workflow?: Prisma.WorkflowOrderByWithRelationInput
-  outbox?: Prisma.WorkflowRunOutboxOrderByWithRelationInput
   nodeRuns?: Prisma.NodeRunOrderByRelationAggregateInput
 }
 
@@ -240,7 +238,6 @@ export type WorkflowRunWhereUniqueInput = Prisma.AtLeast<{
   lockedAt?: Prisma.DateTimeNullableFilter<"WorkflowRun"> | Date | string | null
   lockedBy?: Prisma.StringNullableFilter<"WorkflowRun"> | string | null
   workflow?: Prisma.XOR<Prisma.WorkflowScalarRelationFilter, Prisma.WorkflowWhereInput>
-  outbox?: Prisma.XOR<Prisma.WorkflowRunOutboxNullableScalarRelationFilter, Prisma.WorkflowRunOutboxWhereInput> | null
   nodeRuns?: Prisma.NodeRunListRelationFilter
 }, "id">
 
@@ -284,7 +281,6 @@ export type WorkflowRunCreateInput = {
   lockedAt?: Date | string | null
   lockedBy?: string | null
   workflow: Prisma.WorkflowCreateNestedOneWithoutRunsInput
-  outbox?: Prisma.WorkflowRunOutboxCreateNestedOneWithoutWorkflowRunInput
   nodeRuns?: Prisma.NodeRunCreateNestedManyWithoutWorkflowRunInput
 }
 
@@ -298,7 +294,6 @@ export type WorkflowRunUncheckedCreateInput = {
   finishedAt?: Date | string | null
   lockedAt?: Date | string | null
   lockedBy?: string | null
-  outbox?: Prisma.WorkflowRunOutboxUncheckedCreateNestedOneWithoutWorkflowRunInput
   nodeRuns?: Prisma.NodeRunUncheckedCreateNestedManyWithoutWorkflowRunInput
 }
 
@@ -312,7 +307,6 @@ export type WorkflowRunUpdateInput = {
   lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflow?: Prisma.WorkflowUpdateOneRequiredWithoutRunsNestedInput
-  outbox?: Prisma.WorkflowRunOutboxUpdateOneWithoutWorkflowRunNestedInput
   nodeRuns?: Prisma.NodeRunUpdateManyWithoutWorkflowRunNestedInput
 }
 
@@ -326,7 +320,6 @@ export type WorkflowRunUncheckedUpdateInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  outbox?: Prisma.WorkflowRunOutboxUncheckedUpdateOneWithoutWorkflowRunNestedInput
   nodeRuns?: Prisma.NodeRunUncheckedUpdateManyWithoutWorkflowRunNestedInput
 }
 
@@ -458,20 +451,6 @@ export type EnumWorkflowStatusFieldUpdateOperationsInput = {
   set?: $Enums.WorkflowStatus
 }
 
-export type WorkflowRunCreateNestedOneWithoutOutboxInput = {
-  create?: Prisma.XOR<Prisma.WorkflowRunCreateWithoutOutboxInput, Prisma.WorkflowRunUncheckedCreateWithoutOutboxInput>
-  connectOrCreate?: Prisma.WorkflowRunCreateOrConnectWithoutOutboxInput
-  connect?: Prisma.WorkflowRunWhereUniqueInput
-}
-
-export type WorkflowRunUpdateOneRequiredWithoutOutboxNestedInput = {
-  create?: Prisma.XOR<Prisma.WorkflowRunCreateWithoutOutboxInput, Prisma.WorkflowRunUncheckedCreateWithoutOutboxInput>
-  connectOrCreate?: Prisma.WorkflowRunCreateOrConnectWithoutOutboxInput
-  upsert?: Prisma.WorkflowRunUpsertWithoutOutboxInput
-  connect?: Prisma.WorkflowRunWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkflowRunUpdateToOneWithWhereWithoutOutboxInput, Prisma.WorkflowRunUpdateWithoutOutboxInput>, Prisma.WorkflowRunUncheckedUpdateWithoutOutboxInput>
-}
-
 export type WorkflowRunCreateNestedOneWithoutNodeRunsInput = {
   create?: Prisma.XOR<Prisma.WorkflowRunCreateWithoutNodeRunsInput, Prisma.WorkflowRunUncheckedCreateWithoutNodeRunsInput>
   connectOrCreate?: Prisma.WorkflowRunCreateOrConnectWithoutNodeRunsInput
@@ -495,7 +474,6 @@ export type WorkflowRunCreateWithoutWorkflowInput = {
   finishedAt?: Date | string | null
   lockedAt?: Date | string | null
   lockedBy?: string | null
-  outbox?: Prisma.WorkflowRunOutboxCreateNestedOneWithoutWorkflowRunInput
   nodeRuns?: Prisma.NodeRunCreateNestedManyWithoutWorkflowRunInput
 }
 
@@ -508,7 +486,6 @@ export type WorkflowRunUncheckedCreateWithoutWorkflowInput = {
   finishedAt?: Date | string | null
   lockedAt?: Date | string | null
   lockedBy?: string | null
-  outbox?: Prisma.WorkflowRunOutboxUncheckedCreateNestedOneWithoutWorkflowRunInput
   nodeRuns?: Prisma.NodeRunUncheckedCreateNestedManyWithoutWorkflowRunInput
 }
 
@@ -553,74 +530,6 @@ export type WorkflowRunScalarWhereInput = {
   lockedBy?: Prisma.StringNullableFilter<"WorkflowRun"> | string | null
 }
 
-export type WorkflowRunCreateWithoutOutboxInput = {
-  id?: string
-  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.WorkflowStatus
-  errorMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  finishedAt?: Date | string | null
-  lockedAt?: Date | string | null
-  lockedBy?: string | null
-  workflow: Prisma.WorkflowCreateNestedOneWithoutRunsInput
-  nodeRuns?: Prisma.NodeRunCreateNestedManyWithoutWorkflowRunInput
-}
-
-export type WorkflowRunUncheckedCreateWithoutOutboxInput = {
-  id?: string
-  workflowId: string
-  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: $Enums.WorkflowStatus
-  errorMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Date | string
-  finishedAt?: Date | string | null
-  lockedAt?: Date | string | null
-  lockedBy?: string | null
-  nodeRuns?: Prisma.NodeRunUncheckedCreateNestedManyWithoutWorkflowRunInput
-}
-
-export type WorkflowRunCreateOrConnectWithoutOutboxInput = {
-  where: Prisma.WorkflowRunWhereUniqueInput
-  create: Prisma.XOR<Prisma.WorkflowRunCreateWithoutOutboxInput, Prisma.WorkflowRunUncheckedCreateWithoutOutboxInput>
-}
-
-export type WorkflowRunUpsertWithoutOutboxInput = {
-  update: Prisma.XOR<Prisma.WorkflowRunUpdateWithoutOutboxInput, Prisma.WorkflowRunUncheckedUpdateWithoutOutboxInput>
-  create: Prisma.XOR<Prisma.WorkflowRunCreateWithoutOutboxInput, Prisma.WorkflowRunUncheckedCreateWithoutOutboxInput>
-  where?: Prisma.WorkflowRunWhereInput
-}
-
-export type WorkflowRunUpdateToOneWithWhereWithoutOutboxInput = {
-  where?: Prisma.WorkflowRunWhereInput
-  data: Prisma.XOR<Prisma.WorkflowRunUpdateWithoutOutboxInput, Prisma.WorkflowRunUncheckedUpdateWithoutOutboxInput>
-}
-
-export type WorkflowRunUpdateWithoutOutboxInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumWorkflowStatusFieldUpdateOperationsInput | $Enums.WorkflowStatus
-  errorMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  workflow?: Prisma.WorkflowUpdateOneRequiredWithoutRunsNestedInput
-  nodeRuns?: Prisma.NodeRunUpdateManyWithoutWorkflowRunNestedInput
-}
-
-export type WorkflowRunUncheckedUpdateWithoutOutboxInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  workflowId?: Prisma.StringFieldUpdateOperationsInput | string
-  metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  status?: Prisma.EnumWorkflowStatusFieldUpdateOperationsInput | $Enums.WorkflowStatus
-  errorMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  nodeRuns?: Prisma.NodeRunUncheckedUpdateManyWithoutWorkflowRunNestedInput
-}
-
 export type WorkflowRunCreateWithoutNodeRunsInput = {
   id?: string
   metadata?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -631,7 +540,6 @@ export type WorkflowRunCreateWithoutNodeRunsInput = {
   lockedAt?: Date | string | null
   lockedBy?: string | null
   workflow: Prisma.WorkflowCreateNestedOneWithoutRunsInput
-  outbox?: Prisma.WorkflowRunOutboxCreateNestedOneWithoutWorkflowRunInput
 }
 
 export type WorkflowRunUncheckedCreateWithoutNodeRunsInput = {
@@ -644,7 +552,6 @@ export type WorkflowRunUncheckedCreateWithoutNodeRunsInput = {
   finishedAt?: Date | string | null
   lockedAt?: Date | string | null
   lockedBy?: string | null
-  outbox?: Prisma.WorkflowRunOutboxUncheckedCreateNestedOneWithoutWorkflowRunInput
 }
 
 export type WorkflowRunCreateOrConnectWithoutNodeRunsInput = {
@@ -673,7 +580,6 @@ export type WorkflowRunUpdateWithoutNodeRunsInput = {
   lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   workflow?: Prisma.WorkflowUpdateOneRequiredWithoutRunsNestedInput
-  outbox?: Prisma.WorkflowRunOutboxUpdateOneWithoutWorkflowRunNestedInput
 }
 
 export type WorkflowRunUncheckedUpdateWithoutNodeRunsInput = {
@@ -686,7 +592,6 @@ export type WorkflowRunUncheckedUpdateWithoutNodeRunsInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  outbox?: Prisma.WorkflowRunOutboxUncheckedUpdateOneWithoutWorkflowRunNestedInput
 }
 
 export type WorkflowRunCreateManyWorkflowInput = {
@@ -709,7 +614,6 @@ export type WorkflowRunUpdateWithoutWorkflowInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  outbox?: Prisma.WorkflowRunOutboxUpdateOneWithoutWorkflowRunNestedInput
   nodeRuns?: Prisma.NodeRunUpdateManyWithoutWorkflowRunNestedInput
 }
 
@@ -722,7 +626,6 @@ export type WorkflowRunUncheckedUpdateWithoutWorkflowInput = {
   finishedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   lockedBy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  outbox?: Prisma.WorkflowRunOutboxUncheckedUpdateOneWithoutWorkflowRunNestedInput
   nodeRuns?: Prisma.NodeRunUncheckedUpdateManyWithoutWorkflowRunNestedInput
 }
 
@@ -779,7 +682,6 @@ export type WorkflowRunSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   lockedAt?: boolean
   lockedBy?: boolean
   workflow?: boolean | Prisma.WorkflowDefaultArgs<ExtArgs>
-  outbox?: boolean | Prisma.WorkflowRun$outboxArgs<ExtArgs>
   nodeRuns?: boolean | Prisma.WorkflowRun$nodeRunsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkflowRunCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workflowRun"]>
@@ -825,7 +727,6 @@ export type WorkflowRunSelectScalar = {
 export type WorkflowRunOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "workflowId" | "metadata" | "status" | "errorMetadata" | "createdAt" | "finishedAt" | "lockedAt" | "lockedBy", ExtArgs["result"]["workflowRun"]>
 export type WorkflowRunInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workflow?: boolean | Prisma.WorkflowDefaultArgs<ExtArgs>
-  outbox?: boolean | Prisma.WorkflowRun$outboxArgs<ExtArgs>
   nodeRuns?: boolean | Prisma.WorkflowRun$nodeRunsArgs<ExtArgs>
   _count?: boolean | Prisma.WorkflowRunCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -840,7 +741,6 @@ export type $WorkflowRunPayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "WorkflowRun"
   objects: {
     workflow: Prisma.$WorkflowPayload<ExtArgs>
-    outbox: Prisma.$WorkflowRunOutboxPayload<ExtArgs> | null
     nodeRuns: Prisma.$NodeRunPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1248,7 +1148,6 @@ readonly fields: WorkflowRunFieldRefs;
 export interface Prisma__WorkflowRunClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   workflow<T extends Prisma.WorkflowDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkflowClient<runtime.Types.Result.GetResult<Prisma.$WorkflowPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  outbox<T extends Prisma.WorkflowRun$outboxArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowRun$outboxArgs<ExtArgs>>): Prisma.Prisma__WorkflowRunOutboxClient<runtime.Types.Result.GetResult<Prisma.$WorkflowRunOutboxPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   nodeRuns<T extends Prisma.WorkflowRun$nodeRunsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkflowRun$nodeRunsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NodeRunPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1681,25 +1580,6 @@ export type WorkflowRunDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many WorkflowRuns to delete.
    */
   limit?: number
-}
-
-/**
- * WorkflowRun.outbox
- */
-export type WorkflowRun$outboxArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the WorkflowRunOutbox
-   */
-  select?: Prisma.WorkflowRunOutboxSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the WorkflowRunOutbox
-   */
-  omit?: Prisma.WorkflowRunOutboxOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.WorkflowRunOutboxInclude<ExtArgs> | null
-  where?: Prisma.WorkflowRunOutboxWhereInput
 }
 
 /**

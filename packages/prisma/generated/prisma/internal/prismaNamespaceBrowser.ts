@@ -61,7 +61,6 @@ export const ModelName = {
   AvailableAction: 'AvailableAction',
   Credentials: 'Credentials',
   WorkflowRun: 'WorkflowRun',
-  WorkflowRunOutbox: 'WorkflowRunOutbox',
   NodeRun: 'NodeRun'
 } as const
 
@@ -205,15 +204,6 @@ export const WorkflowRunScalarFieldEnum = {
 } as const
 
 export type WorkflowRunScalarFieldEnum = (typeof WorkflowRunScalarFieldEnum)[keyof typeof WorkflowRunScalarFieldEnum]
-
-
-export const WorkflowRunOutboxScalarFieldEnum = {
-  id: 'id',
-  workflowRunId: 'workflowRunId',
-  createdAt: 'createdAt'
-} as const
-
-export type WorkflowRunOutboxScalarFieldEnum = (typeof WorkflowRunOutboxScalarFieldEnum)[keyof typeof WorkflowRunOutboxScalarFieldEnum]
 
 
 export const NodeRunScalarFieldEnum = {
