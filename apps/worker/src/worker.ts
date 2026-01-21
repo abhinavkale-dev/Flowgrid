@@ -7,11 +7,8 @@ const WORKER_ID = `worker-${process.pid}`;
 export const worker = new Worker<WorkflowJobData>(
     'workflow-runs',
     async(job) => {
-        console.log(`[${WORKER_ID}] Processing job ${job.id}: workflow run ${job.data.workflowRunId}`);
-
         try {
             await executeWorkflow(job.data.workflowRunId);
-            console.log(`[${WORKER_ID}] Completed job ${job.id}`);
         } catch (error) {
             console.error(`[${WORKER_ID}] Job ${job.id} failed:`, error);
             throw error;
@@ -27,10 +24,6 @@ export const worker = new Worker<WorkflowJobData>(
         autorun: false,
     }
 );
-
-worker.on('completed', (job) => {
-    console.log(`[${WORKER_ID}] Job ${job.id} completed`);
-});
 
 worker.on('failed', (job, err) => {
     console.error(`[${WORKER_ID}] Job ${job?.id} failed:`, err);

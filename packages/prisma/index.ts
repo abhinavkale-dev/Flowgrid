@@ -22,6 +22,6 @@ if (process.env.NODE_ENV !== 'production') {
   globalForPrisma.prisma = prisma
 }
 
-export * from './generated/prisma/client'
+export * from './generated/prisma/client.js'
 export { NodeStatus, WorkflowStatus, Platform } from './generated/prisma/enums.js'
 
