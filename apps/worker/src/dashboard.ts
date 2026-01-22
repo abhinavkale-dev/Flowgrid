@@ -18,14 +18,17 @@ app.use('/admin/queues', serverAdapter.getRouter())
 const PORT = process.env.BULL_BOARD_PORT || 3002
 
 const server = app.listen(PORT, () => {
-  console.log(`Bull Board Dashboard: http://localhost:${PORT}/admin/queues`)
+  console.log(`FlowGrid Worker Dashboard running at http://localhost:${PORT}/admin/queues`)
 })
 
-const shutdown = (signal: string) => {
-  console.log(`${signal} received, shutting down dashboard...`)
+process.on('SIGINT', () => {
+  console.log('Dashboard shutting down...')
   server.close()
   process.exit(0)
-}
+})
 
-process.on('SIGINT', () => shutdown('SIGINT'))
-process.on('SIGTERM', () => shutdown('SIGTERM'))
+process.on('SIGTERM', () => {
+  console.log('Dashboard shutting down...')
+  server.close()
+  process.exit(0)
+})
